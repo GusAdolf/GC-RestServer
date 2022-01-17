@@ -1,8 +1,9 @@
 require('./config/config');
-
 const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
+
 
 
 // parse application/x-www-form-urlencoded
@@ -11,37 +12,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+//todos los endpoint de usuairo
+app.use(require('./server/routes/usuario'));
 
-//get consultar datos
-app.get('/usuario', (req, res) => {
-    res.json("get usuario");
-});
-
-//post crear nuevos registros
-app.post('/usuario', (req, res) => {
-    res.json("post usuario");
-});
-
-//put actulizar registros
-app.put('/usuario/:id', (req, res) => {
-    let body = req.body;
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            mensaje: "El nombre es necesario"
-
-        });
-
-    } else {
-
-        res.json({
-            persona: body
-        });
+/* Conexion con la BDD */
+mongoose.connect('mongodb://localhost:27017/coffe', (err, res) => {
+    if (err) {
+        throw err;
     }
-});
+    console.log("Base de datos ON LINEA! ");
 
-//delete  eliminar registros (cambiar a inactivo)
-app.delete('/usuario', (req, res) => {
-    res.json("delete usuario");
 });
 
 app.listen(process.env.PORT, () => {

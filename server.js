@@ -16,7 +16,8 @@ app.use(bodyParser.json());
 app.use(require('./server/routes/usuario'));
 
 /* Conexion con la BDD */
-mongoose.connect('mongodb://localhost:27017/coffe', (err, res) => {
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true }, (err, res) => {
+
     if (err) {
         throw err;
     }
